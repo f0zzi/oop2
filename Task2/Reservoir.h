@@ -15,6 +15,10 @@ private:
 public:
 	Reservoir() : Reservoir("No name", noType, 1, 1, 1) {};
 	Reservoir(const char* name, ResType type, int width, int length, int depth);
+	Reservoir(const Reservoir& other):
+	Reservoir(other.name, other.type, other.width, other.length, other.depth) {}
+	~Reservoir();
+
 	void SetName(const char* name);
 
 	void SetResType(ResType type)

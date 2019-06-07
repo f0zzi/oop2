@@ -11,6 +11,11 @@ Reservoir::Reservoir(const char* name, ResType type, int width, int length, int 
 	SetName(name);
 	reservoirCount++;
 }
+Reservoir::~Reservoir()
+{
+	if (name != nullptr)
+		delete[] name;
+}
 void Reservoir::SetName(const char* name)
 {
 	if (this->name != nullptr)

@@ -20,6 +20,7 @@ int main()
 	cout << Reservoir::GetBiggerAreaRes(*arr[1], *arr[2]) << endl;
 	cout << "Index of the biggest reservoir in array: ";
 	cout << Reservoir::GetBiggestFromArray(arr, lake) << endl;
+	delete arr[0];
 	system("pause");
 	return 0;
 }
