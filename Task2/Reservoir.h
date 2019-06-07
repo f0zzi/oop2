@@ -2,6 +2,7 @@
 #include <iostream>
 #include <cstring>
 using namespace std;
+
 enum ResType { noType, lake, sea, ocean };
 
 class Reservoir
@@ -13,78 +14,25 @@ private:
 	static int reservoirCount;
 public:
 	Reservoir() : Reservoir("No name", noType, 1, 1, 1) {};
-	Reservoir(const char* name, ResType type, int width, int length, int depth) :
-		width(width), length(length), depth(depth), type(type)
+	Reservoir(const char* name, ResType type, int width, int length, int depth);
+	void SetName(const char* name);
+
+	void SetResType(ResType type)
 	{
-		SetName(name);
-		reservoirCount++;
+		this->type = type;
 	}
-	void SetName(const char* name)
-	{
-		if (this->name != nullptr)
-			delete[] this->name;
-		int size = strlen(name) + 1;
-		this->name = new char[size];
-		strcpy_s(this->name, size, name);
-	}
-	void SetWidth(int width)
-	{
-		if (width <= 0)
-		{
-			cout << "Invalid width. Should be bigger than 0.\n";
-			system("pause");
-		}
-		else
-			this->width = width;
-	}
-	void SetLength(int length)
-	{
-		if (length <= 0)
-		{
-			cout << "Invalid width. Should be bigger than 0.\n";
-			system("pause");
-		}
-		else
-			this->length = length;
-	}
-	void SetDepth(int depth)
-	{
-		if (depth <= 0)
-		{
-			cout << "Invalid width. Should be bigger than 0.\n";
-			system("pause");
-		}
-		else
-			this->depth = depth;
-	}
+	void SetWidth(int width);
+
+	void SetLength(int length);
+
+	void SetDepth(int depth);
+
 	static int GetReservoirCount()
 	{
 		return reservoirCount;
 	}
-	void ShowFullInfo() const
-	{
-		cout << "Name: " << GetName();
-		cout << "  Type: ";
-		switch (GetResType())
-		{
-		case 0:
-			cout << "No type";
-			break;
-		case 1:
-			cout << "lake";
-			break;
-		case 2:
-			cout << "sea";
-			break;
-		case 3:
-			cout << "ocean";
-			break;
-		default:
-			cout << "Error.";
-			break;
-		}
-		cout << "  Volume: " << GetVolume() << "  Area: " << GetArea() << endl;
-	}
+	void ShowFullInfo() const;
+
 	const char* GetName() const
 	{
 		return this->name;
@@ -113,35 +61,9 @@ public:
 	{
 		return this->width * this->length;
 	}
-	static bool SameResType(const Reservoir& first, const Reservoir& second)
-	{
-		return first.GetResType() == second.GetResType();
-	}
-	static int GetBiggerAreaRes(const Reservoir& first, const Reservoir& second)
-	{
-		if (first.GetArea() > second.GetArea())
-			return 1;
-		else if (first.GetArea() < second.GetArea())
-			return -1;
-		else
-			return 0;
-	}
-	static int GetBiggestAreaRes(const Reservoir* arr, ResType type)
-	{
-		int index = -1;
-		int maxArea = 0;
-		for (int i = 0; i < Reservoir::GetReservoirCount(); i++)
-		{
-			if (arr[i].GetResType() == type)
-			{
-				if (arr[i].GetArea() > maxArea)
-				{
-					index = i;
-					maxArea = arr[i].GetArea();
-				}
-			}
-		}
-		return index;
-	}
+	static bool SameResType(const Reservoir& first, const Reservoir& second);
+
+	static int GetBiggerAreaRes(const Reservoir& first, const Reservoir& second);
+
+	static int GetBiggestFromArray(Reservoir** arr, ResType type);
 };
-int Reservoir::reservoirCount = 0;
