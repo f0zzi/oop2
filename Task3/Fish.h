@@ -8,14 +8,14 @@ private:
 	int hp;
 	char fishId;
 	static const int SIZE = 10;
-	static char arr[][SIZE];
+	static char sea[][SIZE];
 	static int fishQuantity;
 public:
 	Fish() : Fish((rand() % SIZE), (rand() % SIZE), 50) {}
 	Fish(int x, int y, int hp) :x(x), y(y), hp(hp)
 	{
 		fishId = (char)((++fishQuantity) + 48);
-		arr[x][y] = fishId;
+		sea[x][y] = fishId;
 	}
 	int GetX() const
 	{
@@ -38,7 +38,7 @@ public:
 	}
 	void Move()
 	{
-		arr[x][y] = ' ';
+		sea[x][y] = ' ';
 		if (hp > 0) {
 			switch ((rand() % 8) + 1)
 			{
@@ -83,37 +83,83 @@ public:
 					x--;
 				break;
 			}
-			if (arr[x][y] == 'F')
+			if (sea[x][y] == 'F')
 				hp += 50;
-			arr[x][y] = fishId;
+			sea[x][y] = fishId;
 			hp--;
 		}
 		if (hp == 0)
 		{
-			arr[x][y] = ' ';
+			sea[x][y] = ' ';
 			fishQuantity--;
 			hp--;
 		}
 	}
 	static char GetCell(int x, int y)
 	{
-		return arr[x][y];
+		return sea[x][y];
 	}
 	static void Feed(int size)
 	{
 		int x, y;
 		for (int i = 0; i < size; i++)
 		{
-			x = rand() % 10;
-			y = rand() % 10;
-			if (arr[x][y] == ' ')
-				arr[x][y] = 'F';
+			do
+			{
+				x = rand() % 10;
+				y = rand() % 10;
+			} while (sea[x][y] != ' ');
+			sea[x][y] = 'F';
 		}
 	}
 	static int GetFishQuantity()
 	{
 		return fishQuantity;
 	}
+	static void ShowFishesInfo(Fish* fishes, int quantity)
+	{
+		for (int i = 0; i < quantity; i++)
+		{
+			cout << "Fish #" << i + 1 << ": ";
+			fishes[i].ShowFish();
+		}
+	}
+	static void ShowSea()
+	{
+		for (int x = -1; x < SIZE + 1; x++)
+		{
+			for (int y = -1; y < 11; y++)
+			{
+				if ((x < 0 || x > 9) || (y < 0 || y > 9))
+					cout << '#';
+				else
+					cout << Fish::GetCell(x, y);
+				cout << ' ';
+			}
+			cout << endl;
+		}
+	}
+	static void StartFishes(Fish* fishes, int meal, int frequency)
+	{
+		int turn = 1;
+		int quantity = fishQuantity;
+		while (fishQuantity)
+		{
+			system("cls");
+			if (turn % frequency == 0)
+				Fish::Feed(meal);
+			turn++;
+
+			for (int i = 0; i < 5; i++)
+			{
+				fishes[i].Move();
+			}
+			Fish::ShowFishesInfo(fishes, quantity);
+			Fish::ShowSea();
+			Sleep(100);
+		};
+		cout << "Sorry, all fishes are dead.\n";
+	}
 };
 int Fish::fishQuantity = 0;
-char Fish::arr[10][10] = { ' ' };
+char Fish::sea[10][10] = { ' ' };
