@@ -11,6 +11,7 @@ private:
 	static char arr[][SIZE];
 	static int fishQuantity;
 public:
+	Fish() : Fish((rand() % SIZE), (rand() % SIZE), 50) {}
 	Fish(int x, int y, int hp) :x(x), y(y), hp(hp)
 	{
 		fishId = (char)((++fishQuantity) + 48);
@@ -24,9 +25,16 @@ public:
 	{
 		return y;
 	}
+	int GetHp() const
+	{
+		return hp;
+	}
 	void ShowFish() const
 	{
-		cout << "Coords[" << x << "][" << y << "]  HP: " << hp << endl;
+		if (hp > 0)
+			cout << "Coords[" << x << "][" << y << "]  HP: " << hp << endl;
+		else
+			cout << "dead.\n";
 	}
 	void Move()
 	{
@@ -80,6 +88,12 @@ public:
 			arr[x][y] = fishId;
 			hp--;
 		}
+		if (hp == 0)
+		{
+			arr[x][y] = ' ';
+			fishQuantity--;
+			hp--;
+		}
 	}
 	static char GetCell(int x, int y)
 	{
@@ -95,6 +109,10 @@ public:
 			if (arr[x][y] == ' ')
 				arr[x][y] = 'F';
 		}
+	}
+	static int GetFishQuantity()
+	{
+		return fishQuantity;
 	}
 };
 int Fish::fishQuantity = 0;

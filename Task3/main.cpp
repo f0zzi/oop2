@@ -8,23 +8,22 @@ using namespace std;
 int main()
 {
 	srand(time(nullptr));
-	int hp = 50, meal = 5;
-	Fish fish1(5, 5, hp);
-	Fish fish2(5, 5, hp);
-	Fish fish3(5, 5, hp);
-	Fish fish4(5, 5, hp);
-	Fish fish5(5, 5, hp);
-
-	for (int i = 0; i < 200; i++)
+	int turn = 0;
+	int meal = 2;
+	Fish* fishes = new Fish[5];
+	while (Fish::GetFishQuantity())
 	{
 		system("cls");
-		if (i % 10 == 0)
+		if (turn % 25 == 0)
+		{
 			Fish::Feed(meal);
-		fish1.ShowFish();
-		fish2.ShowFish();
-		fish3.ShowFish();
-		fish4.ShowFish();
-		fish5.ShowFish();
+			turn++;
+		}
+		for (int i = 0; i < 5; i++)
+		{
+			cout << "Fish #" << i + 1 << ": ";
+			fishes[i].ShowFish();
+		}
 		for (int x = -1; x < 11; x++)
 		{
 			for (int y = -1; y < 11; y++)
@@ -33,16 +32,18 @@ int main()
 					cout << '#';
 				else
 					cout << Fish::GetCell(x, y);
+				cout << ' ';
 			}
 			cout << endl;
 		}
-		fish1.Move();
-		fish2.Move();
-		fish3.Move();
-		fish4.Move();
-		fish5.Move();
-		Sleep(50);
-	}
+		for (int i = 0; i < 5; i++)
+		{
+			fishes[i].Move();
+		}
+		Sleep(100);
+	};
+	delete[] fishes;
+	cout << "Sorry, all fishes are dead.\n";
 	system("pause");
 	return 0;
 }
