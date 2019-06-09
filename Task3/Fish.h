@@ -150,7 +150,7 @@ public:
 				Fish::Feed(meal);
 			turn++;
 
-			for (int i = 0; i < 5; i++)
+			for (int i = 0; i < quantity; i++)
 			{
 				fishes[i].Move();
 			}
